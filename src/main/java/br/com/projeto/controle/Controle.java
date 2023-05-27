@@ -18,6 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.projeto.modelo.Mensagem;
 import br.com.projeto.modelo.Pessoa;
 
+
+// Importações responsãveis pela documentação das rotas
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
+
 @RestController
 @RequestMapping("/api")
 public class Controle {
@@ -34,6 +43,30 @@ public class Controle {
 
     // ***** Rotas
     @PostMapping("/cadastrar")
+    @Operation(summary = "Rota responsável pelo cadastro de pessoas")
+    @ApiResponses(value = {
+    @ApiResponse(
+        responseCode = "201", 
+        description = "Pessoa cadastrada com sucesso",
+        content = {
+            @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = Pessoa.class)
+            )
+        }
+    ),
+
+    @ApiResponse(
+        responseCode = "400", 
+        description = "Informação inválida",
+        content = {
+            @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = Mensagem.class)
+            )
+        }
+    )
+})
     public ResponseEntity<?> cadastrar(@RequestBody Pessoa p){
 
         // Validação do nome (precisa ter pelo menos três caracteres)
@@ -65,6 +98,19 @@ public class Controle {
     }
 
     @GetMapping("/listar")
+    @Operation(summary = "Rota responsável pelo listagem de pessoas")
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200", 
+            description = "Listagem de pessoas",
+            content = {
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = Pessoa.class)
+                )
+            }
+        )
+    })
     public List<Pessoa> listarPessoas(){
 
         // Retornar a lista de pessoas cadastradas
@@ -73,6 +119,30 @@ public class Controle {
     }
 
     @GetMapping("/obterPessoa/{codigo}")
+    @Operation(summary = "Rota responsável por obter uma pessoa através do código")
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200", 
+            description = "Pessoa encontrada",
+            content = {
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = Pessoa.class)
+                )
+            }
+        ),
+
+        @ApiResponse(
+            responseCode = "404", 
+            description = "Pessoa não encontrada",
+            content = {
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = Mensagem.class)
+                )
+            }
+        )
+    })
     public ResponseEntity<?> obterPessoa(@PathVariable long codigo){
 
         // Criar um objeto Pessoa
@@ -102,6 +172,30 @@ public class Controle {
     }
 
     @PutMapping("/alterar")
+    @Operation(summary = "Rota responsável pela alteração de dados das pessoas")
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200", 
+            description = "Pessoa alterada com sucesso",
+            content = {
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = Pessoa.class)
+                )
+            }
+        ),
+
+        @ApiResponse(
+            responseCode = "400", 
+            description = "Falha ao localizar o alterar os dados da pessoa",
+            content = {
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = Mensagem.class)
+                )
+            }
+        )
+    })
     public ResponseEntity<?> alterar(@RequestBody Pessoa p){
 
         // Verificar a posição da pessoa informada na lista
@@ -142,6 +236,30 @@ public class Controle {
     }
 
     @DeleteMapping("/remover/{codigo}")
+    @Operation(summary = "Rota responsável pela remoção de pessoas")
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200", 
+            description = "Pessoa removida com sucesso",
+            content = {
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = Mensagem.class)
+                )
+            }
+        ),
+
+        @ApiResponse(
+            responseCode = "400", 
+            description = "Falha ao encontrar a pessoa ou remover",
+            content = {
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = Mensagem.class)
+                )
+            }
+        )
+    })
     public ResponseEntity<Mensagem> remover(@PathVariable int codigo){
 
         // Verificar a posição da pessoa informada na lista
