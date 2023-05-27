@@ -13,7 +13,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 		title = "Tutorial documentando APIs",
 		version = "1.0",
 		description = "Documentando uma API básica de gerenciamento de pessoas",
-		contact = @Contact()
+		contact = @Contact(name = "Daniel Saraiva", email = "daniel.saraiva@prof.ce.gov.br", url = "github.com/dansaraiva")
 	)
 )
 public class ProjetoApplication {
